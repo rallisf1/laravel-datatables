@@ -87,6 +87,10 @@ class EloquentDataTable extends QueryDataTable
         $relation = implode('.', $parts);
 
         if ($this->isNotEagerLoaded($relation)) {
+			if(count($parts) > 1){
+				$parts = explode('.', $this->joinEagerLoadedColumn($relation, $columnName));
+				$columnName = array_shift($parts).'.'.$column;
+			}
             return parent::compileQuerySearch($query, $columnName, $keyword, $boolean);
         }
 
